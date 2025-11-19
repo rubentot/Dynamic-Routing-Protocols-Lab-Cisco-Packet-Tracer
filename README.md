@@ -60,21 +60,29 @@ router eigrp 100
  Question Highlights & Answers
 RIP Section
 
-Q2 → Broadcast (255.255.255.255)
-Q4 → Multicast (224.0.0.9)
-Q7 → Two routes to 10.1.1.0/24 → equal-cost load balancing (both paths = 2 hops)
+**Q2:** Debug the routing protocol updates on R1 with the ‘debug ip rip’ command. Observe the updates being sent and received. What kind of traffic is used (unicast, broadcast or multicast)?
+**A:** RIPv1 uses **broadcast** (255.255.255.255)
+
+**Q4:** (After version 2 on all routers) What kind of traffic is used for the updates now?
+**A:** RIPv2 uses **multicast 224.0.0.9** — much cleaner, only RIP routers process it
+
+
+**Q7:** Why are there two routes to the 10.1.1.0/24 network in the routing table?
+**A:** **Equal-cost load balancing** in RIP — both paths are exactly 2 hops (R1→R2→R3 and R1→R5→R4→R3). RIP only cares about hop count, so it installs both and load-balances (even though one path has slow serial links).
+
 
 OSPF Section
 
 Q10 → No, RIP routes gone → OSPF AD 110 < RIP AD 120
 
-Q11 → Only one route → OSPF uses bandwidth-based cost (serial links = cost ~647, top path = cost 2)
+**Q11:** (After OSPF is configured) Why is there now only one route to the 10.1.1.0/24 network?
+**A:** OSPF uses **bandwidth-based cost**. Top path (all FastEthernet) = cost 3. Bottom path (serial links) = cost ~648. OSPF intelligently picks only the fast path. This is why RIP is obsolete.
 
-Q12-14 → Shut R2 Fa0/0 → route switches to R5, cost jumps to ~648
 
-Q15 → OSPF database = full topology map. RIP database = just routes/metrics → link-state vs distance-vector
-
-OSPF Link-State Database (Q15)
+**Q15:** Compare the RIP database and the OSPF database.
+**A:** 
+- `show ip rip database` = just a list of routes + metrics (distance-vector)
+- `show ip ospf database` = full link-state topology map (Router LSAs, Network LSAs) — every router has the complete picture and runs SPF independently. This is why OSPF converges fast and avoids loops.
 
 ![OSPF Database](./images/ospf-database-r1.png)
 
