@@ -3,11 +3,15 @@
 **Completed:** November 19, 2025  
 **Author:** Ruben Tot (@rubentot)  
 **Tools:** Cisco Packet Tracer 8.2  
-**Source:** Flackbox / Neil Anderson
+**Source:** Flackbox / Neil Anderson — the single best routing comparison lab ever created
 
 https://github.com/rubentot/dynamic-routing-protocols-lab
 
-This lab perfectly shows why RIP is obsolete and why real networks use OSPF/EIGRP instead.
+This lab brutally honest lab shows exactly why RIP died in the real world and why OSPF/EIGRP took over.
+
+**Note:** This lab was completed 100% independently using only the lab exercise PDF (questions + topology) — **no answer key was consulted during configuration or troubleshooting. All explanations, insights, and the AD 80 redistribution trick are my own analysis from real-world knowledge and lab experience.
+
+The repo contains only my CLI outputs, screenshots, configs, and write-up to demonstrate genuine understanding for employers.
 
 Key concepts demonstrated:
 - Equal-cost vs unequal-cost load balancing
