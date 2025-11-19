@@ -81,7 +81,16 @@ Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in 
 
 OSPF Cost-Based Path Selection (only one route to 10.1.1.0/24)
 
-![OSPF Intelligent Routing](./images/ospf-databse-r1-png)
+```bash
+R1#show ip route
+
+10.0.0.0/8 is variably subnetted, 12 subnets, 2 masks
+C        10.0.0.0/24 is directly connected, FastEthernet0/0
+O        10.1.0.0/24 [110/2] via 10.0.0.2, FastEthernet0/0
+O        10.1.1.0/24 [110/3] via 10.0.0.2, FastEthernet0/0   ← ONLY ONE ROUTE (cost 3)
+O        10.1.2.0/24 [110/4] via 10.0.0.2, FastEthernet0/0
+O        10.1.3.0/24 [110/13] via 10.0.0.2, FastEthernet0/0
+```
 
 Q27 – The Money Question (6 commands total)
 
@@ -97,6 +106,7 @@ On R1, R2, R3, R4 only:
 ```bash
 router rip
  distance 80
+```
 
 Loopbacks 192.168.0.x/32 need explicit network statement in EIGRP
 Passive-interface stops hellos → breaks adjacency → forces suboptimal path
