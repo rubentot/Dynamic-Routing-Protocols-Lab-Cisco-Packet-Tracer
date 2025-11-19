@@ -81,7 +81,7 @@ Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in 
 
 OSPF Cost-Based Path Selection (only one route to 10.1.1.0/24)
 
-![OSPF Intelligent Routing](./images/ospf-one-route-r1.png)
+![OSPF Intelligent Routing](./images/ospf-databse-r1-png)
 
 Q27 – The Money Question (6 commands total)
 
