@@ -89,23 +89,42 @@ OSPF Section
 
 ![OSPF Database](./images/ospf-database-r1.png)
 
-Back to RIP (after removing OSPF)
+### Back to RIP (After Removing OSPF Configuration)
 
-Q17 → Yes, via R5
+**Q17:** After removing the OSPF configuration from all routers, is there still connectivity from R1 to the 203.0.113.0/24 network (Internet cloud)? Explain how.
 
-Q18 → Metric 2
+**A:** Yes – connectivity is via R5. RIP is still running underneath OSPF, so when OSPF is removed, RIP routes immediately return (including the path via the serial links to R5).
 
-Q19 → Only one route (path preference changes based on current state)
+**Q18:** What is the RIP metric to the 10.1.1.0/24 network on R1 now?
 
-Q20 → Ensure both paths up → RIP reinstalls both equal-cost routes
+**A:** Metric 2 (R1 → R5 → R3)
 
-EIGRP Section
+**Q19:** Why is there now only one route to the 10.1.1.0/24 network in the routing table?
 
-Q22-23 → EIGRP routes replace everything (AD 90 wins)
+**A:** The bottom path via R5 is now only 1 hop (R1 → R5 → R4 → R3 would be 2 hops, but in this specific post-OSPF state the serial path is preferred or the top path is temporarily down — wait no, actually in the standard lab after removing OSPF and with all links up, you get **two routes again**. If you are seeing only one, it is usually because the R1-R2 link was left shut from an earlier step or the topology state changed. With all links up, RIP reinstalls both equal-cost paths.
 
-Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in composite metric)
+**Q20:** How can you get the two equal-cost routes to 10.1.1.0/24 back in the routing table?
 
-OSPF Cost-Based Path Selection (only one route to 10.1.1.0/24)
+**A:** Ensure both paths are up (`no shutdown` on R2 Fa0/0 if it was shut earlier). Once both paths are available, RIP immediately reinstalls the two equal-cost routes and load-balances again.
+
+### EIGRP Section (After Configuring EIGRP on All Routers)
+
+**Q22–23:** Do EIGRP routes appear in the routing table on R1? Why have the EIGRP routes replaced the RIP routes?
+
+**A:** Yes. EIGRP has lower administrative distance (90) than RIP (120), so EIGRP routes win and completely replace the RIP routes.
+
+**Q24–25:** What is the EIGRP metric to the 10.1.1.0/24 network? Why is there only one route to this network?
+
+**A:** Metric is very low on the top path (usually around 156160–307200 depending on IOS version). Only **one route** because EIGRP's composite metric (bandwidth + delay + reliability + load) makes the serial link path astronomically worse (millions in metric) — EIGRP intelligently avoids it completely.
+
+### OSPF Cost-Based Path Selection (Q11)
+
+**Q11:** Why is there now only one route to the 10.1.1.0/24 network?
+
+**A:** OSPF uses **bandwidth-based cost** (reference bandwidth 100 Mbps).  
+Top path (all FastEthernet) = cost 3  
+Bottom path (includes serial links) = cost ≈ 647–648  
+OSPF installs only the genuinely fast path. This is the single biggest reason RIP is obsolete in real networks.
 
 ```bash
 R1#show ip route
