@@ -73,8 +73,6 @@ RIP Section
 
 OSPF Section
 
-Q10 → No, RIP routes gone → OSPF AD 110 < RIP AD 120
-
 **Q11:** (After OSPF is configured) Why is there now only one route to the 10.1.1.0/24 network?
 **A:** OSPF uses **bandwidth-based cost**. Top path (all FastEthernet) = cost 3. Bottom path (serial links) = cost ~648. OSPF intelligently picks only the fast path. This is why RIP is obsolete.
 
@@ -115,21 +113,12 @@ O        10.1.2.0/24 [110/4] via 10.0.0.2, FastEthernet0/0
 O        10.1.3.0/24 [110/13] via 10.0.0.2, FastEthernet0/0
 ```
 
-Q27 – The Money Question (6 commands total)
+**Q27 (The Money Question):** How can you maintain connectivity if the R1–R2 link fails, using only 6 commands total and without putting EIGRP on R5 yet?
 
-Goal: Prefer fast top path while up, automatic failover to R5 path when R1-R2 link dies — without enabling EIGRP on R5.
-
-EIGRP Composite Metric Wins (AD 90, lowest actual bandwidth/delay)
-
-![EIGRP Best Path](./images/eigrp-one-route-r1.png)
-
-The pro solution (real-world migration technique):
-
-On R1, R2, R3, R4 only:
+**A:** On R1, R2, R3, R4 only:
 ```bash
 router rip
  distance 80
-```
 
 Loopbacks 192.168.0.x/32 need explicit network statement in EIGRP
 Passive-interface stops hellos → breaks adjacency → forces suboptimal path
