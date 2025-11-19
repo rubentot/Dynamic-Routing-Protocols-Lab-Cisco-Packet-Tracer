@@ -74,12 +74,15 @@ Q22-23 → EIGRP routes replace everything (AD 90 wins)
 Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in composite metric)
 
 Q27 – The Money Question (6 commands total)
-BashR1-R4(config)# router rip
-R1-R4(config-router)# distance 80
-→ RIP AD = 80 beats EIGRP 90 → primary fast path preferred while up
-→ R1-R2 link fails → RIP path dies → EIGRP backup via R5 activates automatically
-Real-world migration/redistribution technique. Interviewers love this.
-Loopbacks & Passive Interfaces
+
+Goal: Prefer fast top path while up, automatic failover to R5 path when R1-R2 link dies — without enabling EIGRP on R5.
+
+The pro solution (real-world migration technique):
+
+On R1, R2, R3, R4 only:
+```bash
+router rip
+ distance 80
 
 Loopbacks 192.168.0.x/32 need explicit network statement in EIGRP
 Passive-interface stops hellos → breaks adjacency → forces suboptimal path
