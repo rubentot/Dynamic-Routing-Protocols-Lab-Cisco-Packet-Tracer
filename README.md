@@ -18,6 +18,8 @@ Key concepts demonstrated:
 - Loopback advertisement
 - Link-state database vs distance-vector table
 
+![Lab Topology](./images/topology.png)
+
 ## Real-World IGP Usage (2025)
 
 | Rank | Protocol   | Where it's actually used                  | Why |
@@ -61,6 +63,9 @@ Q11 → Only one route → OSPF uses bandwidth-based cost (serial links = cost ~
 Q12-14 → Shut R2 Fa0/0 → route switches to R5, cost jumps to ~648
 Q15 → OSPF database = full topology map. RIP database = just routes/metrics → link-state vs distance-vector
 
+OSPF Link-State Database (Q15)
+![OSPF Database](./images/ospf-database-r1.png)
+
 Back to RIP (after removing OSPF)
 
 Q17 → Yes, via R5
@@ -73,9 +78,15 @@ EIGRP Section
 Q22-23 → EIGRP routes replace everything (AD 90 wins)
 Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in composite metric)
 
+OSPF Cost-Based Path Selection (only one route to 10.1.1.0/24)
+![OSPF Intelligent Routing](./images/ospf-one-route-r1.png)
+
 Q27 – The Money Question (6 commands total)
 
 Goal: Prefer fast top path while up, automatic failover to R5 path when R1-R2 link dies — without enabling EIGRP on R5.
+
+EIGRP Composite Metric Wins (AD 90, lowest actual bandwidth/delay)
+![EIGRP Best Path](./images/eigrp-one-route-r1.png)
 
 The pro solution (real-world migration technique):
 
