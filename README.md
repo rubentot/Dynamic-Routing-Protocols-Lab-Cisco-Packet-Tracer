@@ -63,8 +63,11 @@ Q7 → Two routes to 10.1.1.0/24 → equal-cost load balancing (both paths = 2 h
 OSPF Section
 
 Q10 → No, RIP routes gone → OSPF AD 110 < RIP AD 120
+
 Q11 → Only one route → OSPF uses bandwidth-based cost (serial links = cost ~647, top path = cost 2)
+
 Q12-14 → Shut R2 Fa0/0 → route switches to R5, cost jumps to ~648
+
 Q15 → OSPF database = full topology map. RIP database = just routes/metrics → link-state vs distance-vector
 
 OSPF Link-State Database (Q15)
@@ -74,13 +77,17 @@ OSPF Link-State Database (Q15)
 Back to RIP (after removing OSPF)
 
 Q17 → Yes, via R5
+
 Q18 → Metric 2
+
 Q19 → Only one route (path preference changes based on current state)
+
 Q20 → Ensure both paths up → RIP reinstalls both equal-cost routes
 
 EIGRP Section
 
 Q22-23 → EIGRP routes replace everything (AD 90 wins)
+
 Q24-25 → Only one route → EIGRP correctly avoids serial link (huge delay in composite metric)
 
 OSPF Cost-Based Path Selection (only one route to 10.1.1.0/24)
