@@ -35,20 +35,24 @@ Key concepts demonstrated:
 
 
 ! RIP v2
+```bash
 router rip
  version 2
  no auto-summary
  network 10.0.0.0
+```
 
 ! OSPF
+```bash
 router ospf 1
  network 10.0.0.0 0.255.255.255 area 0
-
+```
 ! EIGRP
+```bash
 router eigrp 100
  no auto-summary
  network 10.0.0.0 0.255.255.255
-
+```
  Question Highlights & Answers
 RIP Section
 
