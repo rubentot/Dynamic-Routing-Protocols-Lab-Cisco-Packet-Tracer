@@ -3,7 +3,7 @@
 **Completed:** November 19, 2025  
 **Author:** Ruben Tot (@rubentot)  
 **Tools:** Cisco Packet Tracer 8.2  
-**Source:** Flackbox / Neil Anderson — the single best routing comparison lab ever created
+**Source:** Flackbox / Neil Anderson
 
 https://github.com/rubentot/dynamic-routing-protocols-lab
 
